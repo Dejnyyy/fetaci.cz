@@ -58,6 +58,48 @@ export default function Home() {
         transition={{ duration: 1.5 }}
         className="relative flex flex-col items-center text-center"
       >
+           <motion.h1
+        className="text-4xl font-bold relative"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
+  <span
+    className="relative"
+    style={{
+      display: "inline-block",
+    }}
+  >
+    {/* Base Text */}
+    {[..."fetaci"].map((letter, index) => (
+      <motion.span
+        key={index}
+        className="relative"
+        style={{
+          display: "inline-block",
+          textShadow: "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Glowing text effect
+        }}
+        animate={{
+          textShadow: [
+            "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Initial glow
+            "0 0 20px #00ffff, 0 0 40px #00ffff", // Transition glow
+            "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Back to initial
+          ],
+          color: ["#FFFFFF", "#FFD700", "#FFFFFF"], // Text color transitions
+          scale: [0.5,2,0.5], // Subtle zoom effect
+        }}
+        transition={{
+          duration: 2, // Length of one pulse
+          repeat: Infinity, // Infinite pulsing
+          ease: "easeInOut", // Smooth easing
+          delay: index * 0.05, // Stagger for each letter
+        }}
+      >
+        {letter === " " ? "\u00A0" : letter} {/* Preserve spaces */}
+      </motion.span>
+    ))}
+  </span>
+</motion.h1>
        <motion.h1
         className="text-4xl font-bold relative"
         initial={{ opacity: 0 }}
