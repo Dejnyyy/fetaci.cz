@@ -59,11 +59,11 @@ export default function Home() {
         className="relative flex flex-col items-center text-center"
       >
        <motion.h1
-  className="text-4xl font-bold relative"
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ duration: 2 }}
->
+        className="text-4xl font-bold relative"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
   <span
     className="relative"
     style={{
