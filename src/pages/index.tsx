@@ -181,8 +181,8 @@ export default function Home() {
  
       {/* Footer */}
       <footer className="absolute bottom-4 text-sm">
-        <Link href="https://dejny.eu" className="cursor-pointer">
-          <p>Dejny.eu</p>
+        <Link href="https://dejny.eu" className="cursor-pointer" target="_blank">
+          <p className="dejny">Dejny.eu</p>
         </Link>
       </footer>
 
