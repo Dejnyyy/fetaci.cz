@@ -140,11 +140,11 @@ export default function Home() {
           backgroundColor: "#ff00ff", // Start with purple
         }}
         animate={{
-          opacity: [1, 0],
+          opacity: [1, 1],
           scale: [1, 0.5],
           x: Math.cos((index / particlesArray.length) * 2 * Math.PI) * 100,
           y: Math.sin((index / particlesArray.length) * 2 * Math.PI) * 100,
-          backgroundColor: ["#ff00ff", "#00ffff", "#ffff00"], // Purple to cyan to yellow
+          backgroundColor: ["#ff00ff","#FFC0CB", "#ffff00"], // Purple to cyan to yellow
         }}
         transition={{
           duration: 1,
