@@ -17,10 +17,19 @@
       background-position: 200% 0%;
     }
   }
-  .gradient-stripe2 {
+  @keyframes slidee {
+   
+    0% {
+      background-position: 200% 0%;
+    }
+    100% {
+        background-position: 0% 0%;
+      }
+  }
+  .gradient-stripee {
     width: 100%;
     height: 8px;
-    background: linear-gradient(to left, #FFD700, #FF00FF, #FFD700);
+    background: linear-gradient(to right, #FFD700, #FF00FF, #FFD700);
     background-size: 200% 100%;
-    animation: slide 2s linear infinite;
+    animation: slidee 2s linear infinite;
   }

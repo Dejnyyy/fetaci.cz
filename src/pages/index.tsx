@@ -13,7 +13,7 @@ const particlesArray = Array.from({ length: 15 }); // For fireworks and hearts
 export default function Home() {
   const [fireworks, setFireworks] = useState<Firework[]>([]);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-
+  
   // Track mouse movement
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -50,7 +50,7 @@ export default function Home() {
     >
       
       <div className="gradient-stripe absolute top-0 left-0 w-full h-4"></div>
-      <div className="gradient-stripe2 absolute bottom-0 left-0 w-full h-4"></div>
+      <div className="gradient-stripee absolute bottom-0 left-0 w-full h-4"></div>
       {/* Center Content */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -77,22 +77,22 @@ export default function Home() {
         className="relative"
         style={{
           display: "inline-block",
-          textShadow: "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Glowing text effect
+          textShadow: "0 0 10px #ff00ff, 0 0 20px #ff00ff",
         }}
         animate={{
           textShadow: [
-            "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Initial glow
-            "0 0 20px #00ffff, 0 0 40px #00ffff", // Transition glow
-            "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Back to initial
+            "0 0 10px #ff00ff, 0 0 20px #ff00ff",
+            "0 0 20px #00ffff, 0 0 40px #00ffff",
+            "0 0 10px #ff00ff, 0 0 20px #ff00ff",
           ],
-          color: ["#FFFFFF", "#FFD700", "#FFFFFF"], // Text color transitions
-          scale: [0.5,2,0.5], // Subtle zoom effect
+          color: ["#FFFFFF", "#FFD700", "#FFFFFF"],
+          scale: [0.5,2,0.5],
         }}
         transition={{
-          duration: 2, // Length of one pulse
-          repeat: Infinity, // Infinite pulsing
-          ease: "easeInOut", // Smooth easing
-          delay: index * 0.05, // Stagger for each letter
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: index * 0.05,
         }}
       >
         {letter === " " ? "\u00A0" : letter} {/* Preserve spaces */}
@@ -178,7 +178,7 @@ export default function Home() {
 
 
       </motion.div>
-
+ 
       {/* Footer */}
       <footer className="absolute bottom-4 text-sm">
         <Link href="https://dejny.eu" className="cursor-pointer">
