@@ -48,10 +48,9 @@ export default function Home() {
       onClick={handleClick}
       className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white overflow-hidden"
     >
-      {/* Gradient Stripes */}
-      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-300 via-pink-500 to-yellow-300" />
-      <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-300 via-purple-500 to-yellow-300" />
-
+      
+      <div className="gradient-stripe absolute top-0 left-0 w-full h-4"></div>
+      <div className="gradient-stripe2 absolute bottom-0 left-0 w-full h-4"></div>
       {/* Center Content */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -72,7 +71,7 @@ export default function Home() {
     }}
   >
     {/* Base Text */}
-    {[..."We are working on something..."].map((letter, index) => (
+    {[..."we are working on something..."].map((letter, index) => (
       <motion.span
         key={index}
         className="relative"
@@ -102,7 +101,40 @@ export default function Home() {
   </span>
 </motion.h1>
 
-        <p className="text-lg mt-2">Give us some time</p>
+<motion.p
+  className="text-lg mt-2"
+  style={{ whiteSpace: "pre-wrap" }} // Preserves line breaks and spacing
+>
+  <motion.span
+    animate={{
+      opacity: [1, 0], // Text fades out completely at the end
+    }}
+    transition={{
+      duration: 2, // Total duration of one cycle
+      repeat: Infinity, // Infinite looping
+    }}
+  >
+    {[..."wait for it!"].map((letter, index) => (
+      <motion.span
+        key={index}
+        className="inline-block"
+        animate={{
+          opacity: [0, 1], // Letters fade in sequentially
+        }}
+        transition={{
+          duration: 0.1, // Duration for each letter
+          delay: index * 0.05, // Staggered appearance for each letter
+          repeat: Infinity, // Repeat each letter's fade-in animation
+          repeatType: "reverse", // Reverse the animation for seamless loop
+        }}
+      >
+        {letter === " " ? "\u00A0" : letter} {/* Preserve spaces */}
+      </motion.span>
+    ))}
+  </motion.span>
+</motion.p>
+
+
       </motion.div>
 
       {/* Footer */}
