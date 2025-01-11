@@ -13,7 +13,7 @@ const particlesArray = Array.from({ length: 15 }); // For fireworks and hearts
 export default function Home() {
   const [fireworks, setFireworks] = useState<Firework[]>([]);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  
+
   // Track mouse movement
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -59,9 +59,50 @@ export default function Home() {
         transition={{ duration: 1.5 }}
         className="relative flex flex-col items-center text-center"
       >
-      
-        <h1 className="text-2xl mt-6">We are working on something...</h1>
-        <p className="text-lg mt-2">Move your mouse and click for fun!</p>
+       <motion.h1
+  className="text-4xl font-bold relative"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 2 }}
+>
+  <span
+    className="relative"
+    style={{
+      display: "inline-block",
+    }}
+  >
+    {/* Base Text */}
+    {[..."We are working on something..."].map((letter, index) => (
+      <motion.span
+        key={index}
+        className="relative"
+        style={{
+          display: "inline-block",
+          textShadow: "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Glowing text effect
+        }}
+        animate={{
+          textShadow: [
+            "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Initial glow
+            "0 0 20px #00ffff, 0 0 40px #00ffff", // Transition glow
+            "0 0 10px #ff00ff, 0 0 20px #ff00ff", // Back to initial
+          ],
+          color: ["#FFFFFF", "#FFD700", "#FFFFFF"], // Text color transitions
+          scale: [1, 1.05, 1], // Subtle zoom effect
+        }}
+        transition={{
+          duration: 1.5, // Length of one pulse
+          repeat: Infinity, // Infinite pulsing
+          ease: "easeInOut", // Smooth easing
+          delay: index * 0.05, // Stagger for each letter
+        }}
+      >
+        {letter === " " ? "\u00A0" : letter} {/* Preserve spaces */}
+      </motion.span>
+    ))}
+  </span>
+</motion.h1>
+
+        <p className="text-lg mt-2">Give us some time</p>
       </motion.div>
 
       {/* Footer */}
@@ -80,45 +121,44 @@ export default function Home() {
         }}
       />
 
-    
-
       {/* Render Fireworks */}
       {fireworks.map((fw) => (
-  <motion.div
-    key={fw.id}
-    className="absolute"
-    style={{
-      top: fw.y - 3,
-      left: fw.x - 3,
-    }}
-  >
-    {particlesArray.map((_, index) => (
-      <motion.div
-        key={index}
-        className="absolute w-2 h-2 rounded-full"
-        initial={{
-          opacity: 1,
-          scale: 1,
-          x: 0,
-          y: 0,
-          backgroundColor: "#ff00ff", // Start with purple
-        }}
-        animate={{
-          opacity: [1, 1],
-          scale: [1, 0.5],
-          x: Math.cos((index / particlesArray.length) * 2 * Math.PI) * 100,
-          y: Math.sin((index / particlesArray.length) * 2 * Math.PI) * 100,
-          backgroundColor: ["#ff00ff","#FFC0CB", "#ffff00"], // Purple to cyan to yellow
-        }}
-        transition={{
-          duration: 1,
-          ease: "easeOut",
-        }}
-      />
-    ))}
-  </motion.div>
-))}
-
+        <motion.div
+          key={fw.id}
+          className="absolute"
+          style={{
+            top: fw.y - 3,
+            left: fw.x - 3,
+          }}
+        >
+          {particlesArray.map((_, index) => (
+            <motion.div
+              key={index}
+              className="absolute w-2 h-2 rounded-full"
+              initial={{
+                opacity: 1,
+                scale: 1,
+                x: 0,
+                y: 0,
+                backgroundColor: "#ff00ff", // Start with purple
+              }}
+              animate={{
+                opacity: [1, 1],
+                scale: [1, 0.5],
+                x:
+                  Math.cos((index / particlesArray.length) * 2 * Math.PI) * 100,
+                y:
+                  Math.sin((index / particlesArray.length) * 2 * Math.PI) * 100,
+                backgroundColor: ["#ff00ff", "#FFC0CB", "#ffff00"], // Purple to cyan to yellow
+              }}
+              transition={{
+                duration: 1,
+                ease: "easeOut",
+              }}
+            />
+          ))}
+        </motion.div>
+      ))}
     </div>
   );
 }
