@@ -13,9 +13,7 @@ const particlesArray = Array.from({ length: 15 }); // For fireworks and hearts
 export default function Home() {
   const [fireworks, setFireworks] = useState<Firework[]>([]);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [trail1Position, setTrail1Position] = useState({ x: 0, y: 0 });
-  const [trail2Position, setTrail2Position] = useState({ x: 0, y: 0 });
-
+  
   // Track mouse movement
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -29,24 +27,6 @@ export default function Home() {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
-
-  // Update trailing positions based on the cursor
-  useEffect(() => {
-    const updateTrails = () => {
-      setTrail1Position((prev) => ({
-        x: prev.x + (cursorPosition.x - prev.x) * 0.2,
-        y: prev.y + (cursorPosition.y - prev.y) * 0.2,
-      }));
-
-      setTrail2Position((prev) => ({
-        x: prev.x + (trail1Position.x - prev.x) * 0.2,
-        y: prev.y + (trail1Position.y - prev.y) * 0.2,
-      }));
-    };
-
-    const interval = setInterval(updateTrails, 16); // Approx. 60 FPS
-    return () => clearInterval(interval);
-  }, [cursorPosition, trail1Position]);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -100,23 +80,7 @@ export default function Home() {
         }}
       />
 
-      {/* Trailing Ball 1 */}
-      <motion.div
-        className="fixed w-4 h-4 bg-pink-500 rounded-full pointer-events-none z-40"
-        style={{
-          top: trail1Position.y - 10,
-          left: trail1Position.x - 10,
-        }}
-      />
-
-      {/* Trailing Ball 2 */}
-      <motion.div
-        className="fixed w-3 h-3 bg-yellow-300 rounded-full pointer-events-none z-30"
-        style={{
-          top: trail2Position.y - 8,
-          left: trail2Position.x - 8,
-        }}
-      />
+    
 
       {/* Render Fireworks */}
       {fireworks.map((fw) => (
