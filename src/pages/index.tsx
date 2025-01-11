@@ -1,8 +1,73 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+
+// Define types for firework particles
+type Firework = {
+  x: number;
+  y: number;
+  id: number;
+};
+const particlesArray = Array.from({ length: 15 }); // For fireworks and hearts
+
 export default function Home() {
+  const [fireworks, setFireworks] = useState<Firework[]>([]);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [trail1Position, setTrail1Position] = useState({ x: 0, y: 0 });
+  const [trail2Position, setTrail2Position] = useState({ x: 0, y: 0 });
+
+  // Track mouse movement
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      const { clientX: x, clientY: y } = event;
+      setCursorPosition({ x, y });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  // Update trailing positions based on the cursor
+  useEffect(() => {
+    const updateTrails = () => {
+      setTrail1Position((prev) => ({
+        x: prev.x + (cursorPosition.x - prev.x) * 0.2,
+        y: prev.y + (cursorPosition.y - prev.y) * 0.2,
+      }));
+
+      setTrail2Position((prev) => ({
+        x: prev.x + (trail1Position.x - prev.x) * 0.2,
+        y: prev.y + (trail1Position.y - prev.y) * 0.2,
+      }));
+    };
+
+    const interval = setInterval(updateTrails, 16); // Approx. 60 FPS
+    return () => clearInterval(interval);
+  }, [cursorPosition, trail1Position]);
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const newFirework = { x, y, id: Date.now() };
+
+    setFireworks((prev) => [...prev, newFirework]);
+
+    // Remove the firework after animation
+    setTimeout(() => {
+      setFireworks((prev) => prev.filter((fw) => fw.id !== newFirework.id));
+    }, 1000); // Match animation duration
+  };
+
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white">
+    <div
+      onClick={handleClick}
+      className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white overflow-hidden"
+    >
       {/* Gradient Stripes */}
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-300 via-pink-500 to-yellow-300" />
       <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-300 via-purple-500 to-yellow-300" />
@@ -12,19 +77,84 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
-        className="text-center"
+        className="relative flex flex-col items-center text-center"
       >
-        <div className="text-4xl font-bold mb-2">⏸</div>
-        <h1 className="text-2xl">We are working on something...</h1>
-        <p className="text-lg mt-2">Give us some time</p>
+      
+        <h1 className="text-2xl mt-6">We are working on something...</h1>
+        <p className="text-lg mt-2">Move your mouse and click for fun!</p>
       </motion.div>
 
       {/* Footer */}
-      <footer className="absolute bottom-4 text-sm cursor-pointer">
-        <div>
-       <Link href={"https://dejny.eu"}className="cursor-pointer"><p className="cursor-pointer">Dejny.eu</p></Link>
-       </div>
+      <footer className="absolute bottom-4 text-sm">
+        <Link href="https://dejny.eu" className="cursor-pointer">
+          <p>Dejny.eu</p>
+        </Link>
       </footer>
+
+      {/* Custom Cursor */}
+      <motion.div
+        className="fixed w-6 h-6 bg-purple-500 rounded-full pointer-events-none z-50"
+        style={{
+          top: cursorPosition.y - 12,
+          left: cursorPosition.x - 12,
+        }}
+      />
+
+      {/* Trailing Ball 1 */}
+      <motion.div
+        className="fixed w-4 h-4 bg-pink-500 rounded-full pointer-events-none z-40"
+        style={{
+          top: trail1Position.y - 10,
+          left: trail1Position.x - 10,
+        }}
+      />
+
+      {/* Trailing Ball 2 */}
+      <motion.div
+        className="fixed w-3 h-3 bg-yellow-300 rounded-full pointer-events-none z-30"
+        style={{
+          top: trail2Position.y - 8,
+          left: trail2Position.x - 8,
+        }}
+      />
+
+      {/* Render Fireworks */}
+      {fireworks.map((fw) => (
+  <motion.div
+    key={fw.id}
+    className="absolute"
+    style={{
+      top: fw.y - 3,
+      left: fw.x - 3,
+    }}
+  >
+    {particlesArray.map((_, index) => (
+      <motion.div
+        key={index}
+        className="absolute w-2 h-2 rounded-full"
+        initial={{
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          y: 0,
+          backgroundColor: "#ff00ff", // Start with purple
+        }}
+        animate={{
+          opacity: [1, 0],
+          scale: [1, 0.5],
+          x: Math.cos((index / particlesArray.length) * 2 * Math.PI) * 100,
+          y: Math.sin((index / particlesArray.length) * 2 * Math.PI) * 100,
+          backgroundColor: ["#ff00ff", "#00ffff", "#ffff00"], // Purple to cyan to yellow
+        }}
+        transition={{
+          duration: 1,
+          ease: "easeOut",
+        }}
+      />
+    ))}
+  </motion.div>
+))}
+
     </div>
   );
 }
